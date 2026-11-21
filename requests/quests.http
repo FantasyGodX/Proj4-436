@@ -1,0 +1,82 @@
+### Request collection (VS Code "REST Client" extension, or copy into curl/Postman).
+### Switch baseUrl to your live Vercel URL to test production.
+@baseUrl = http://localhost:3000
+# @baseUrl = https://YOUR-PROJECT.vercel.app
+
+### Health check
+GET {{baseUrl}}/api/health
+
+### List all quests
+GET {{baseUrl}}/quests
+
+### List open quests, richest first
+GET {{baseUrl}}/quests?status=open&sort=reward_gold&order=desc
+
+### List hard quests, max 5
+GET {{baseUrl}}/quests?difficulty=hard&limit=5
+
+### Create a quest (201)
+# @name createQuest
+POST {{baseUrl}}/quests
+Content-Type: application/json
+
+{
+  "title": "Defeat the Bridge Troll",
+  "description": "A troll is charging tolls at Old Stone Bridge.",
+  "difficulty": "medium",
+  "reward_gold": 150
+}
+
+### Save the new id from the response above
+@questId = {{createQuest.response.body.id}}
+
+### Get one quest
+GET {{baseUrl}}/quests/{{questId}}
+
+### Claim it (PATCH, partial update)
+PATCH {{baseUrl}}/quests/{{questId}}
+Content-Type: application/json
+
+{
+  "status": "claimed",
+  "claimed_by": "Aria"
+}
+
+### Replace it (PUT, full replace, title required)
+PUT {{baseUrl}}/quests/{{questId}}
+Content-Type: application/json
+
+{
+  "title": "Defeat the Bridge Troll (revised)",
+  "difficulty": "hard",
+  "reward_gold": 250
+}
+
+### Delete it
+DELETE {{baseUrl}}/quests/{{questId}}
+
+### ---- Error cases ----
+
+### 400: missing title, bad reward, unknown field
+POST {{baseUrl}}/quests
+Content-Type: application/json
+
+{ "reward_gold": -5, "foo": 1 }
+
+### 400: malformed JSON
+POST {{baseUrl}}/quests
+Content-Type: application/json
+
+{ not json
+
+### 400: bad id
+GET {{baseUrl}}/quests/not-a-uuid
+
+### 400: bad query parameter
+GET {{baseUrl}}/quests?status=bogus
+
+### 404: valid UUID that does not exist
+GET {{baseUrl}}/quests/00000000-0000-0000-0000-000000000000
+
+### 404: unknown route
+GET {{baseUrl}}/dragons
