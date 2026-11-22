@@ -2,8 +2,8 @@
 
 A REST API for a fantasy quest board: post quests, claim them, and mark them complete. Built with Express (ES modules), TypeScript, and a Supabase Postgres database, and deployed to Vercel as a serverless function.
 
-**Live URL:** `https://YOUR-PROJECT.vercel.app`
-**Try it:** `GET https://YOUR-PROJECT.vercel.app/quests`
+**Live URL:** `https://proj4-436.vercel.app`
+**Try it:** `GET https://proj4-436.vercel.app/quests`
 
 ## Tech
 

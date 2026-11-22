@@ -1,7 +1,7 @@
 ### Request collection (VS Code "REST Client" extension, or copy into curl/Postman).
 ### Switch baseUrl to your live Vercel URL to test production.
 @baseUrl = http://localhost:3000
-# @baseUrl = https://YOUR-PROJECT.vercel.app
+# @baseUrl = https://proj4-436.vercel.app
 
 ### Health check
 GET {{baseUrl}}/api/health
