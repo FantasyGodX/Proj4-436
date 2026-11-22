@@ -5,6 +5,8 @@ A REST API for a fantasy quest board: post quests, claim them, and mark them com
 **Live URL:** `https://proj4-436.vercel.app`
 **Try it:** `GET https://proj4-436.vercel.app/quests`
 
+> **Free-tier wake-up delay:** this API runs on free tiers. The first request after a period of inactivity can take several seconds (or longer) to respond, because Vercel has to start the serverless function (a cold start) and a free Supabase project that has been idle for about a week is paused and must wake up. If the first request is slow or fails, wait a few seconds and send it again; later requests are fast.
+
 ## Tech
 
 - Express 5, ES modules (`"type": "module"`, `import` everywhere)
@@ -52,6 +54,18 @@ A **quest** looks like this:
 ## Endpoints
 
 All bodies are JSON (`Content-Type: application/json`). All errors look like `{ "error": "message" }`.
+
+### `GET /`
+
+Returns the API name and a list of available endpoints.
+
+Response `200`:
+```json
+{
+  "name": "Quest Board API",
+  "endpoints": ["GET /api/health", "GET /quests", "GET /quests/:id", "POST /quests", "PUT /quests/:id", "PATCH /quests/:id", "DELETE /quests/:id"]
+}
+```
 
 ### `GET /api/health`
 
