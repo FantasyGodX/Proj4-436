@@ -40,23 +40,7 @@ Step-by-step instructions were given for creating the project, running `schema.s
 - Full explanation of how GitHub, Vercel (serverless), and Supabase connect, how secrets are handled, the life of one request, and where to look when something breaks. Saved as `HOW_IT_WORKS.md` and linked from the README.
 - Clarified that `HOW_IT_WORKS.md` (infrastructure) and `EXPLANATION.md` (code) cover different things but overlap slightly on deployment and request flow. Offered to merge them.
 
-## 7. Going live and final checks
-- Production URL `https://proj4-436.vercel.app` added to `README.md` and `requests/quests.http`.
-- Full create/PATCH/PUT/get/delete cycle and all error cases tested against the live site; every result was correct.
-- A requirements audit against the brief found all 8 objectives met. Noted risks: the due date, and commit history spanning only two days (no backdating or fake commits were made).
-
-## 8. Professor's additional instructions
-The professor's summary added: status codes 400, 404, 201 and 204, a README that documents every endpoint and notes the free-tier wake-up delay, and one complete example request.
-- DELETE changed from `200` with a body to `204 No Content`; README, walkthrough guide and request collection updated, verified locally and on the live site.
-- README now documents `GET /` and has a free-tier wake-up delay note (Vercel cold start, free Supabase project pausing after inactivity).
-- README has an "Example request" section with a complete `POST /quests` curl command.
-
-## 9. Extra documents
-- `explanation-for-professor.md` was written as a grading guide (kept local, not pushed).
-- This file was requested to be pushed so the professor can see it.
-
-## 10. Submission checklist (Brightspace)
-1. Repo URL: https://github.com/FantasyGodX/Proj4-436
-2. Live base URL: https://proj4-436.vercel.app
-3. Comment box: one runnable example request, e.g. `POST https://proj4-436.vercel.app/quests` with body `{"title": "Defeat the Bridge Troll", "difficulty": "medium", "reward_gold": 150}`
-4. Open both links in an incognito window before submitting.
+## 7. Remaining to do
+1. Send the production Vercel URL for a live full-CRUD test.
+2. Replace `YOUR-PROJECT.vercel.app` in `README.md` and `requests/quests.http`, then commit and push.
+3. Submit on Brightspace: repo URL, live production URL, and one example request such as `GET https://<url>/quests?status=open`.
