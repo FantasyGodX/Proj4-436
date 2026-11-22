@@ -219,4 +219,4 @@ supabase/schema.sql     table definition and seed data
 requests/quests.http    request collection
 ```
 
-For a guided tour of how the code works, see [EXPLANATION.md](EXPLANATION.md).
+For how GitHub, Vercel, and Supabase fit together, see [HOW_IT_WORKS.md](HOW_IT_WORKS.md). For a guided tour of how the code works, see [EXPLANATION.md](EXPLANATION.md).
