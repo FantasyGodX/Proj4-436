@@ -185,25 +185,35 @@ Response `400` for an empty or invalid body. `404` if the quest does not exist.
 
 ### `DELETE /quests/:id`
 
-Response `200`:
-```json
-{
-  "message": "Quest deleted",
-  "quest": { "id": "0c9e7a8e-3a35-4f6b-8f0b-2f3f4f6a9c77", "title": "Defeat the Bridge Troll", "...": "..." }
-}
-```
+Response `204 No Content` with an empty body when the quest was deleted.
 
-Response `404` if the quest does not exist.
+Response `400` if `:id` is not a UUID. Response `404` if the quest does not exist:
+```json
+{ "error": "Quest 00000000-0000-0000-0000-000000000000 not found" }
+```
 
 ### Status codes
 
 | Code | Meaning                                                              |
 | ---- | -------------------------------------------------------------------- |
-| 200  | Success                                                              |
+| 200  | Success (GET, PUT, PATCH)                                            |
 | 201  | Created (POST)                                                       |
+| 204  | Deleted, no body (DELETE)                                            |
 | 400  | Bad input: invalid JSON, body, id, or query parameter                |
 | 404  | Quest or route not found                                             |
 | 500  | Server or database problem (details are logged, not sent to client)  |
+
+## Example request
+
+Create a quest on the live API:
+
+```bash
+curl -X POST https://proj4-436.vercel.app/quests \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Defeat the Bridge Troll", "difficulty": "medium", "reward_gold": 150}'
+```
+
+Returns `201 Created` with the new quest. The simplest request with no body is `GET https://proj4-436.vercel.app/quests`.
 
 ## Request collection
 

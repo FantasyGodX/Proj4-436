@@ -155,7 +155,8 @@ router.delete(
       .maybeSingle()
     if (error) throw dbError('Failed to delete quest', error.message)
     if (!data) throw notFound(`Quest ${id} not found`)
-    res.status(200).json({ message: 'Quest deleted', quest: data })
+    // 204 No Content: the delete worked, so there is no body to send back.
+    res.status(204).end()
   })
 )
 

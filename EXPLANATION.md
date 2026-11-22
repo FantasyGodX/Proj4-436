@@ -43,14 +43,14 @@ request
 | POST   | `/quests`      | Create                             | 201     | 400, 500          |
 | PUT    | `/quests/:id`  | Replace whole quest                | 200     | 400, 404, 500     |
 | PATCH  | `/quests/:id`  | Update some fields                 | 200     | 400, 404, 500     |
-| DELETE | `/quests/:id`  | Delete                             | 200     | 400, 404, 500     |
+| DELETE | `/quests/:id`  | Delete                             | 204     | 400, 404, 500     |
 
 Key ideas:
 
 - **`:id` is a route parameter.** Express puts the value in `req.params.id`.
 - **Query parameters** (`?status=open&sort=reward_gold`) arrive in `req.query`. In `GET /quests` we read `status`, `difficulty`, `sort`, `order`, and `limit`, validate each against an allowed list, and only then build the Supabase query. Validating first matters: bad input always yields a 400 instead of reaching the database.
 - **PUT vs PATCH.** PUT replaces the whole resource: `title` is required and anything omitted resets to its default. PATCH changes only the fields sent (at least one required).
-- **Status codes.** 201 for creation, 200 for everything else that succeeds, 400 when the client sent something wrong, 404 when the id is valid but no row exists, 500 for our own failures.
+- **Status codes.** 201 for creation, 204 (no body) for a successful delete, 200 for everything else that succeeds, 400 when the client sent something wrong, 404 when the id is valid but no row exists, 500 for our own failures.
 - **The `wrap` helper.** Our handlers are `async`. `wrap(fn)` returns a normal Express handler that calls `fn(req, res)` and does `.catch(next)`, so any thrown error or rejected promise is forwarded to the error handler instead of being lost.
 - **`updateQuest`** is a small shared function because PUT and PATCH differ only in what they send.
 
@@ -66,7 +66,7 @@ Key ideas:
 | Get one | `.select('*').eq('id', id).maybeSingle()` | `maybeSingle()` gives `data = null` when nothing matches, which we map to 404 |
 | Create | `.insert(newQuest).select().single()` | `.select()` after insert returns the new row, including generated `id` and `created_at` |
 | Update | `.update(changes).eq('id', id).select().maybeSingle()` | If no row matched, `data` is null so we return 404 |
-| Delete | `.delete().eq('id', id).select().maybeSingle()` | Returns the deleted row so we can echo it back; null means 404 |
+| Delete | `.delete().eq('id', id).select().maybeSingle()` | `.select()` returns the deleted row so we can tell whether anything matched; null means 404, otherwise we send 204 with no body |
 
 Always `.eq('id', id)` on update and delete. Without a filter, the operation would hit every row.
 
