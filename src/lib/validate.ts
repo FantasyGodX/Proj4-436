@@ -1,4 +1,4 @@
-import { badRequest } from './errors.js'
+import { badRequest, notFound } from './errors.js'
 import type { TablesInsert, TablesUpdate } from '../types/database.types.js'
 
 export const STATUSES = ['open', 'claimed', 'completed'] as const
@@ -7,8 +7,9 @@ export const DIFFICULTIES = ['easy', 'medium', 'hard'] as const
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+// An id that is not a UUID cannot match any quest, so it is a 404, not a 400.
 export function assertUuid(id: string): void {
-  if (!UUID_RE.test(id)) throw badRequest(`"${id}" is not a valid quest id (expected a UUID)`)
+  if (!UUID_RE.test(id)) throw notFound(`Quest "${id}" not found (ids are UUIDs)`)
 }
 
 function isObject(body: unknown): body is Record<string, unknown> {

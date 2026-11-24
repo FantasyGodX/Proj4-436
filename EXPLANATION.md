@@ -39,7 +39,7 @@ request
 | Method | Path           | What it does                       | Success | Possible errors   |
 | ------ | -------------- | ---------------------------------- | ------- | ----------------- |
 | GET    | `/quests`      | List, with filter/sort/limit       | 200     | 400, 500          |
-| GET    | `/quests/:id`  | Get one                            | 200     | 400, 404, 500     |
+| GET    | `/quests/:id`  | Get one                            | 200     | 404, 500          |
 | POST   | `/quests`      | Create                             | 201     | 400, 500          |
 | PUT    | `/quests/:id`  | Replace whole quest                | 200     | 400, 404, 500     |
 | PATCH  | `/quests/:id`  | Update some fields                 | 200     | 400, 404, 500     |
@@ -85,7 +85,7 @@ Request bodies are `unknown` until proven otherwise.
 3. `rejectUnknown` rejects fields we do not recognize, so typos are not silently ignored.
 4. If `errors` is non-empty, we throw `badRequest(errors.join('; '))`, which becomes a 400.
 5. `parseQuestCreate` (POST and PUT) additionally requires `title`. `parseQuestPatch` requires at least one valid field.
-6. `assertUuid` checks the id format before it reaches the database. Postgres would otherwise throw an error for a malformed UUID, which would surface as a confusing 500.
+6. `assertUuid` checks the id format before it reaches the database. A malformed id (such as `999999`) cannot match any quest, so it gets a 404. Without this check, Postgres would throw an error for a malformed UUID, which would surface as a confusing 500.
 
 The returned object contains only trusted, cleaned fields (for example the title is trimmed), and that object is what gets sent to Supabase, never `req.body` directly.
 

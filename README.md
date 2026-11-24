@@ -110,7 +110,7 @@ An invalid value for any parameter returns `400`.
 ### `GET /quests/:id`
 
 Response `200`: a single quest object (same shape as above).
-Response `400` if `:id` is not a UUID. Response `404` if no quest has that id.
+Response `404` if no quest has that id (including ids that are not valid UUIDs, such as `999999`).
 
 ### `POST /quests`
 
@@ -155,7 +155,7 @@ Body:
 { "title": "Defeat the Bridge Troll (revised)", "difficulty": "hard", "reward_gold": 250 }
 ```
 
-Response `200`: the updated quest. `400` for a bad body or id. `404` if the quest does not exist.
+Response `200`: the updated quest. `400` for a bad body. `404` if the quest does not exist.
 
 ### `PATCH /quests/:id`
 
@@ -187,7 +187,7 @@ Response `400` for an empty or invalid body. `404` if the quest does not exist.
 
 Response `204 No Content` with an empty body when the quest was deleted.
 
-Response `400` if `:id` is not a UUID. Response `404` if the quest does not exist:
+Response `404` if the quest does not exist, including an id that is not a valid UUID:
 ```json
 { "error": "Quest 00000000-0000-0000-0000-000000000000 not found" }
 ```
@@ -199,7 +199,7 @@ Response `400` if `:id` is not a UUID. Response `404` if the quest does not exis
 | 200  | Success (GET, PUT, PATCH)                                            |
 | 201  | Created (POST)                                                       |
 | 204  | Deleted, no body (DELETE)                                            |
-| 400  | Bad input: invalid JSON, body, id, or query parameter                |
+| 400  | Bad input: invalid JSON, body, or query parameter                    |
 | 404  | Quest or route not found                                             |
 | 500  | Server or database problem (details are logged, not sent to client)  |
 
